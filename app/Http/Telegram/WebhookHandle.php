@@ -3,6 +3,7 @@
 namespace App\Http\Telegram;
 
 use App\Http\Telegram\Middleware\CheckLanguage;
+use App\Http\Telegram\Strings\StringCheck;
 use DefStudio\Telegraph\DTO\Chat;
 use DefStudio\Telegraph\Handlers\WebhookHandler as Handler;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,8 @@ class WebhookHandle extends Handler
 
     protected function handleChatMessage(Stringable $text): void
     {
-        $this->chat->html("Received: $text")->send();
+        Log::debug($text);
+        StringCheck::check($this->chat->chat_id, (string)$text);
     }
 
     protected function handleUnknownCommand(Stringable $text): void
