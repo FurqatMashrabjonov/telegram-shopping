@@ -2,7 +2,9 @@
 
 namespace App\Http\Telegram;
 
+use App\Http\Telegram\Helpers\ActionHelper;
 use App\Http\Telegram\Middleware\CheckLanguage;
+use App\Http\Telegram\Middleware\CheckPhone;
 use App\Http\Telegram\Strings\StringCheck;
 use DefStudio\Telegraph\DTO\Chat;
 use DefStudio\Telegraph\Handlers\WebhookHandler as Handler;
@@ -17,8 +19,20 @@ class WebhookHandle extends Handler
 
     protected function handleChatMessage(Stringable $text): void
     {
-        Log::debug($text);
-        StringCheck::check($this->chat->chat_id, (string)$text);
+        if (!CheckLanguage::languageSelected($this->chat->chat_id)) {
+            CheckLanguage::askLanguage($this->chat->chat_id);
+            return;
+        }
+
+        if (!CheckPhone::checkPhone($this->chat->chat_id)) {
+            CheckPhone::askPhone($this->chat->chat_id);
+            return;
+        }
+
+        if (ActionHelper::getAction($this->chat->chat_id) === \App\Enums\Action::ENTERING_PHONE) {
+            $text = $this->message->contact()->phoneNumber();
+        }
+        StringCheck::check($this->chat->chat_id, $text);
     }
 
     protected function handleUnknownCommand(Stringable $text): void
@@ -33,6 +47,11 @@ class WebhookHandle extends Handler
 
             if (!CheckLanguage::languageSelected($this->chat->chat_id)) {
                 CheckLanguage::askLanguage($this->chat->chat_id);
+                return;
+            }
+
+            if (!CheckPhone::checkPhone($this->chat->chat_id)) {
+                CheckPhone::askPhone($this->chat->chat_id);
                 return;
             }
 

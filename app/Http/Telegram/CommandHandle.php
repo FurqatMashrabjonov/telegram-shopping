@@ -3,6 +3,7 @@
 namespace App\Http\Telegram;
 
 use App\Models\Chat;
+use DefStudio\Telegraph\Facades\Telegraph;
 
 class CommandHandle
 {

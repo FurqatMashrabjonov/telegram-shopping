@@ -7,6 +7,7 @@ use App\Enums\Action;
 use App\Http\Telegram\Helpers\ActionHelper;
 use App\Http\Telegram\Helpers\LanguageHelper;
 use App\Http\Telegram\Middleware\CheckLanguage;
+use App\Http\Telegram\Middleware\CheckPhone;
 use Illuminate\Support\Facades\Log;
 
 class StringCheck
@@ -19,11 +20,13 @@ class StringCheck
 
     public static function check($chat_id, $text)
     {
+
         $action = ActionHelper::getAction($chat_id);
         Log::debug($action);
         if (!is_null($action)) {
             match ($action) {
-                Action::SELECTING_LANGUAGE => CheckLanguage::setLanguage($chat_id, LanguageHelper::getLangSlug($text))
+                Action::SELECTING_LANGUAGE => CheckLanguage::setLanguage($chat_id, LanguageHelper::getLangSlug($text)),
+                Action::ENTERING_PHONE => CheckPhone::setPhone($chat_id, $text)
             };
         }
 

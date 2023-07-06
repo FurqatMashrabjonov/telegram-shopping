@@ -20,3 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::prefix('webhook')->group(__DIR__ . '/webhooks/index.php');
+
+Route::post('/sms/callback', function (Request $request){
+    \Illuminate\Support\Facades\Log::info('sms', $request->all());
+    return response()->json(['status' => 'ok'])->status(200);
+});

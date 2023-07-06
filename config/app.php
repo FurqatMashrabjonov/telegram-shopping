@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'uz',
 
     /*
     |--------------------------------------------------------------------------
@@ -171,6 +171,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ])->toArray(),
 
     /*

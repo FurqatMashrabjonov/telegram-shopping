@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\ChatController;
+use App\Http\Controllers\Admin\SmsProviderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +27,26 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-});
 
-Route::get('/furqat', function () {
-    return view('furqat');
-})->name('furqat');
+    Route::controller(ChatController::class)
+        ->prefix('/chats')->as('chats.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
+
+    Route::controller(SmsProviderController::class)
+        ->prefix('/sms-providers')->as('sms-providers.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
+
+    Route::controller(SmsProviderController::class)
+        ->prefix('/sms-providers')->as('sms-providers.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
+
+});

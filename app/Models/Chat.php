@@ -14,7 +14,8 @@ class Chat extends TelegraphChat
     protected $fillable = [
         'chat_id',
         'name',
-        'lang'
+        'lang',
+        'phone'
     ];
 
     protected $casts = [

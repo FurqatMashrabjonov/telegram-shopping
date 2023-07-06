@@ -28,6 +28,12 @@ class Keyboard
             ])
             ->row([
                 ReplyButton::make('🇺🇸English'),
-            ]);
+            ])->resize()->oneTime();
+    }
+    public static function phone(){
+        return ReplyKeyboard::make()
+            ->row([
+                ReplyButton::make('📞 Відправити номер телефону')->requestContact(),
+               ])->resize()->oneTime();
     }
 }
